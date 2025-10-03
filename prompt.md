@@ -2,7 +2,7 @@
 
 ### Functionality
 
-- Record audio from microphone or specific application.
+- Record audio from microphone or audio output of the computer.
   - Make them selectable.
   - Save as .mp3 file.
 - Transcribe audio to text using OpenAI Whisper API in realtime.
@@ -25,6 +25,7 @@
 
 - Show a wide and long text area for in the middle.
 - Show buttons for recording, saving, and loading at the right side.
+  - Show current audio magnitude.
 - Show input for the title at the top.
 - Make the UI simple and aesthetic.
 
