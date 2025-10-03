@@ -5,17 +5,17 @@
 - Record audio from microphone or audio output of the computer.
   - Make them selectable.
   - Save as .mp3 file.
-- Transcribe audio to text using OpenAI Whisper API in realtime.
+- Transcribe audio to text using Azure Speech to Text API in realtime.
   - enable to select language
-  - fetch API key from environment variable.
-- Make it able to set environment variable in `.env` file.
+  - fetch required config such as Azure API key from environment variables.
+- Make it able to set environment variables in `.env` file.
   - Make sure this is ignored by git.
 - Show the transcribed text in a text area.
 - Allow user to edit the transcribed text.
   - Make the input by user green.
-  - Make the input by Whisper black.
+  - Make the input by Azure transcription black.
 - Allow user to save the transcribed text as single .html file.
-  - The .html file should contain the text with different colors for user input and Whisper input.
+  - The .html file should contain the text with different colors for user input and Azure transcription input.
 - Allow user to load a .html file and continue editing.
 - Run the app locally on Windows OS.
 - Create input for the title of the note.
