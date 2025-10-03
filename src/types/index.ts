@@ -1,20 +1,22 @@
 export interface TextSegment {
-  id: string;
-  text: string;
-  isUserInput: boolean;
-  timestamp: number;
+	id: string;
+	text: string;
+	isUserInput: boolean;
+	timestamp: number;
 }
 
 export interface NoteData {
-  title: string;
-  segments: TextSegment[];
-  language: string;
-  createdAt: number;
-  updatedAt: number;
+	title: string;
+	segments: TextSegment[];
+	language: string;
+	createdAt: number;
+	updatedAt: number;
 }
 
 export interface AppSettings {
-  selectedAudioDevice: string;
-  selectedLanguage: string;
-  openaiApiKey: string;
+	selectedAudioDevice: string;
+	selectedLanguage: string;
+	openaiApiKey: string;
+	audioSource: "microphone" | "system";
+	audioFormat: "webm" | "mp3";
 }

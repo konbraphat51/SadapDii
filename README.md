@@ -6,7 +6,9 @@ A React-based application for real-time audio recording and transcription using 
 
 ## Features
 
-- 🎤 **Audio Recording**: Record from microphone or select specific audio devices
+- 🎤 **Audio Recording**: Record from microphone or system audio output
+- 🎵 **Multiple Formats**: Save recordings as WebM or MP3 files
+- 💻 **System Audio Capture**: Record computer's audio output (system sounds, music, etc.)
 - 🔤 **Real-time Transcription**: Transcribe audio using OpenAI Whisper API
 - 🌍 **Multi-language Support**: Choose from 15+ supported languages or auto-detect
 - ✏️ **Text Editing**: Edit transcribed text with visual distinction between AI and user input
@@ -43,10 +45,14 @@ The application will be available at `http://localhost:5173/`
 
 ### Recording Audio
 
-1. **Select Audio Device**: Choose your preferred microphone from the dropdown
-2. **Choose Language**: Select the language for transcription (or use auto-detect)
-3. **Start Recording**: Click the "🎤 Start Recording" button
-4. **Stop Recording**: Click "⏹️ Stop Recording" when finished
+1. **Select Audio Source**: Choose between microphone or system audio
+   - **Microphone**: Record from your selected microphone device
+   - **System Audio**: Record computer's audio output (requires screen sharing permission)
+2. **Select Audio Device**: Choose your preferred microphone (when using microphone source)
+3. **Choose Format**: Select WebM (recommended) or MP3 for recording format
+4. **Choose Language**: Select the language for transcription (or use auto-detect)
+5. **Start Recording**: Click the "🎤 Start Recording" button
+6. **Stop Recording**: Click "⏹️ Stop Recording" when finished
 
 ### Editing Text
 
@@ -56,7 +62,8 @@ The application will be available at `http://localhost:5173/`
 
 ### File Operations
 
-- **Save**: Export your transcription as an HTML file with proper formatting
+- **Save HTML**: Export your transcription as an HTML file with proper formatting
+- **Save Audio**: Export the recorded audio as WebM or MP3 file
 - **Load**: Import previously saved HTML files to continue editing
 - **Clear**: Remove all content (with confirmation prompt)
 
