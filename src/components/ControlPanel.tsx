@@ -25,6 +25,10 @@ interface ControlPanelProps {
 	hasRecording: boolean;
 	audioMagnitude: number;
 	error: string | null;
+	// Real-time transcription props
+	realtimeEnabled: boolean;
+	onRealtimeToggle: (enabled: boolean) => void;
+	realtimeStatus: "disconnected" | "connecting" | "connected" | "error";
 }
 
 export const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -46,6 +50,10 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
 	hasRecording,
 	audioMagnitude,
 	error,
+	// Real-time transcription props
+	realtimeEnabled,
+	onRealtimeToggle,
+	realtimeStatus,
 }) => {
 	const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
 	const [supportedFormats, setSupportedFormats] = useState<string[]>([]);
@@ -148,6 +156,27 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
 							</option>
 						))}
 					</select>
+				</div>
+
+				<div className="form-group">
+					<label>
+						<input
+							type="checkbox"
+							checked={realtimeEnabled}
+							onChange={(e) => onRealtimeToggle(e.target.checked)}
+						/>{" "}
+						Real-time Transcription{" "}
+						{realtimeStatus !== "disconnected" && (
+							<span className={`status-indicator status-${realtimeStatus}`}>
+								{realtimeStatus}
+							</span>
+						)}
+					</label>
+					{realtimeEnabled && (
+						<p className="form-help">
+							📡 Text will appear in real-time as you speak during recording
+						</p>
+					)}
 				</div>
 			</div>
 

@@ -4,6 +4,7 @@ import { TextEditor } from "./components/TextEditor";
 import { ControlPanel } from "./components/ControlPanel";
 import { useAudioRecording } from "./hooks/useAudioRecording";
 import { useTextSegments } from "./hooks/useTextSegments";
+import { useRealtimeTranscription } from "./hooks/useRealtimeTranscription";
 import { FileService } from "./services/fileService";
 import "./App.css";
 
@@ -15,9 +16,21 @@ function App() {
 	);
 	const [audioFormat, setAudioFormat] = useState<"webm" | "mp3">("webm");
 	const [selectedDeviceId, setSelectedDeviceId] = useState("");
+	const [realtimeEnabled, setRealtimeEnabled] = useState(false);
 
 	const { segments, addWhisperText, updateSegment, clearSegments } =
 		useTextSegments();
+
+	// Real-time transcription
+	const {
+		isConnected: isRealtimeConnected,
+		connectionStatus: realtimeStatus,
+		startRealtimeTranscription,
+		stopRealtimeTranscription,
+		error: realtimeError,
+	} = useRealtimeTranscription((text: string, isFinal: boolean) => {
+		addWhisperText(text);
+	});
 
 	const {
 		isRecording,
@@ -27,13 +40,16 @@ function App() {
 		error,
 		currentBlob,
 		audioMagnitude,
-	} = useAudioRecording(
-		addWhisperText,
+	} = useAudioRecording({
+		onTranscription: addWhisperText,
 		selectedLanguage,
 		audioSource,
 		audioFormat,
-		selectedDeviceId
-	);
+		selectedDeviceId,
+		realtimeEnabled,
+		startRealtimeTranscription,
+		stopRealtimeTranscription,
+	});
 
 	const handleSave = () => {
 		if (segments.length === 0) {
@@ -126,6 +142,10 @@ function App() {
 						hasRecording={!!currentBlob}
 						audioMagnitude={audioMagnitude}
 						error={error}
+						// Real-time transcription props
+						realtimeEnabled={realtimeEnabled}
+						onRealtimeToggle={setRealtimeEnabled}
+						realtimeStatus={realtimeStatus}
 					/>
 				</aside>
 			</main>

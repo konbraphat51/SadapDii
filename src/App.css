@@ -528,3 +528,47 @@ body {
 		font-size: 0.8rem;
 	}
 }
+
+/* Real-time transcription status indicators */
+.status-indicator {
+	font-size: 0.75rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 2px 6px;
+	border-radius: 4px;
+	margin-left: 8px;
+}
+
+.status-connecting {
+	background-color: #fbbf24;
+	color: #92400e;
+}
+
+.status-connected {
+	background-color: #34d399;
+	color: #065f46;
+	animation: pulse-connected 2s infinite;
+}
+
+.status-error {
+	background-color: #f87171;
+	color: #991b1b;
+}
+
+@keyframes pulse-connected {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.6;
+	}
+}
+
+/* Form help text */
+.form-help {
+	font-size: 0.875rem;
+	color: #6b7280;
+	margin: 0.25rem 0 0 0;
+	font-style: italic;
+}
