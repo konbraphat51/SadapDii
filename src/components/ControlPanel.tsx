@@ -4,6 +4,7 @@ import {
 	type AudioDevice,
 } from "../services/audioRecording";
 import { SUPPORTED_LANGUAGES } from "../services/whisperTranscription";
+import { AudioMagnitudeVisualizer } from "./AudioMagnitudeVisualizer";
 
 interface ControlPanelProps {
 	isRecording: boolean;
@@ -22,6 +23,7 @@ interface ControlPanelProps {
 	selectedDeviceId: string;
 	onDeviceChange: (deviceId: string) => void;
 	hasRecording: boolean;
+	audioMagnitude: number;
 	error: string | null;
 }
 
@@ -42,6 +44,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
 	selectedDeviceId,
 	onDeviceChange,
 	hasRecording,
+	audioMagnitude,
 	error,
 }) => {
 	const [audioDevices, setAudioDevices] = useState<AudioDevice[]>([]);
@@ -161,6 +164,14 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
 						</button>
 					)}
 				</div>
+
+				{/* Audio Magnitude Visualizer */}
+				<AudioMagnitudeVisualizer
+					magnitude={audioMagnitude}
+					isActive={isRecording}
+					className="magnitude-visualizer"
+				/>
+
 				{isRecording && (
 					<div className="recording-indicator">
 						<span className="recording-dot"></span>

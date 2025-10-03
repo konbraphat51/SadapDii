@@ -17,6 +17,11 @@ export class AudioRecordingService {
 	private mediaRecorder: MediaRecorder | null = null;
 	private audioChunks: Blob[] = [];
 	private stream: MediaStream | null = null;
+	private audioContext: AudioContext | null = null;
+	private analyser: AnalyserNode | null = null;
+	private dataArray: Uint8Array | null = null;
+	private animationFrame: number | null = null;
+	private onMagnitudeUpdate?: (magnitude: number) => void;
 
 	async getAudioDevices(): Promise<AudioDevice[]> {
 		try {
@@ -72,6 +77,10 @@ export class AudioRecordingService {
 			};
 
 			this.mediaRecorder.start(100); // Collect data every 100ms for real-time processing
+
+			// Set up audio analysis for magnitude visualization
+			this.setupAudioAnalysis();
+
 			return true;
 		} catch (error) {
 			console.error("Error starting recording:", error);
@@ -140,7 +149,99 @@ export class AudioRecordingService {
 		return this.mediaRecorder?.state === "recording";
 	}
 
+	// Set up callback for magnitude updates
+	setMagnitudeUpdateCallback(callback: (magnitude: number) => void): void {
+		this.onMagnitudeUpdate = callback;
+	}
+
+	// Set up audio analysis for real-time magnitude detection
+	private setupAudioAnalysis(): void {
+		if (!this.stream) return;
+
+		try {
+			this.audioContext = new AudioContext();
+			this.analyser = this.audioContext.createAnalyser();
+
+			// Configure analyser
+			this.analyser.fftSize = 256;
+			this.analyser.smoothingTimeConstant = 0.8;
+
+			// Create source from stream
+			const source = this.audioContext.createMediaStreamSource(this.stream);
+			source.connect(this.analyser);
+
+			// Set up data array for frequency data
+			const bufferLength = this.analyser.frequencyBinCount;
+			this.dataArray = new Uint8Array(bufferLength);
+
+			// Start animation loop for magnitude calculation
+			this.startMagnitudeAnalysis();
+		} catch (error) {
+			console.error("Error setting up audio analysis:", error);
+		}
+	}
+
+	// Start the magnitude analysis loop
+	private startMagnitudeAnalysis(): void {
+		if (!this.analyser || !this.dataArray) return;
+
+		const updateMagnitude = () => {
+			if (!this.analyser || !this.dataArray || !this.isRecording()) {
+				return;
+			}
+
+			// Get frequency data
+			const frequencyData = new Uint8Array(this.dataArray!.length);
+			this.analyser.getByteFrequencyData(frequencyData);
+
+			// Copy data to our array
+			for (let i = 0; i < frequencyData.length; i++) {
+				this.dataArray![i] = frequencyData[i];
+			}
+
+			// Calculate average magnitude
+			let sum = 0;
+			for (let i = 0; i < this.dataArray!.length; i++) {
+				sum += this.dataArray![i];
+			}
+			const average = sum / this.dataArray!.length;
+
+			// Normalize to 0-1 range and apply some scaling for better visualization
+			const magnitude = Math.min(average / 128, 1);
+
+			// Call the callback if set
+			if (this.onMagnitudeUpdate) {
+				this.onMagnitudeUpdate(magnitude);
+			}
+
+			// Continue the loop
+			this.animationFrame = requestAnimationFrame(updateMagnitude);
+		};
+
+		updateMagnitude();
+	}
+
+	// Stop magnitude analysis
+	private stopMagnitudeAnalysis(): void {
+		if (this.animationFrame) {
+			cancelAnimationFrame(this.animationFrame);
+			this.animationFrame = null;
+		}
+
+		if (this.audioContext) {
+			this.audioContext.close();
+			this.audioContext = null;
+		}
+
+		this.analyser = null;
+		this.dataArray = null;
+		this.onMagnitudeUpdate = undefined;
+	}
+
 	private cleanup(): void {
+		// Stop magnitude analysis
+		this.stopMagnitudeAnalysis();
+
 		if (this.stream) {
 			this.stream.getTracks().forEach((track) => track.stop());
 			this.stream = null;

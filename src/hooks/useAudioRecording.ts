@@ -9,6 +9,7 @@ export interface UseAudioRecordingReturn {
 	saveRecording: (filename: string) => Promise<void>;
 	error: string | null;
 	currentBlob: Blob | null;
+	audioMagnitude: number;
 }
 
 export const useAudioRecording = (
@@ -21,10 +22,17 @@ export const useAudioRecording = (
 	const [isRecording, setIsRecording] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [currentBlob, setCurrentBlob] = useState<Blob | null>(null);
+	const [audioMagnitude, setAudioMagnitude] = useState<number>(0);
 
 	const startRecording = useCallback(async () => {
 		try {
 			setError(null);
+
+			// Set up magnitude update callback
+			audioRecordingService.setMagnitudeUpdateCallback((magnitude: number) => {
+				setAudioMagnitude(magnitude);
+			});
+
 			const success = await audioRecordingService.startRecording({
 				deviceId: selectedDeviceId,
 				audioSource,
@@ -46,6 +54,7 @@ export const useAudioRecording = (
 			const audioBlob = await audioRecordingService.stopRecording();
 			setIsRecording(false);
 			setCurrentBlob(audioBlob);
+			setAudioMagnitude(0); // Reset magnitude when stopping
 
 			// Transcribe the audio
 			const result = await whisperService.transcribeAudio(audioBlob, {
@@ -56,6 +65,7 @@ export const useAudioRecording = (
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "Unknown error occurred");
 			setIsRecording(false);
+			setAudioMagnitude(0); // Reset magnitude on error
 		}
 	}, [onTranscription, selectedLanguage]);
 
@@ -82,5 +92,6 @@ export const useAudioRecording = (
 		saveRecording,
 		error,
 		currentBlob,
+		audioMagnitude,
 	};
 };

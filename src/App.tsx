@@ -26,6 +26,7 @@ function App() {
 		saveRecording,
 		error,
 		currentBlob,
+		audioMagnitude,
 	} = useAudioRecording(
 		addWhisperText,
 		selectedLanguage,
@@ -123,6 +124,7 @@ function App() {
 						selectedDeviceId={selectedDeviceId}
 						onDeviceChange={setSelectedDeviceId}
 						hasRecording={!!currentBlob}
+						audioMagnitude={audioMagnitude}
 						error={error}
 					/>
 				</aside>
