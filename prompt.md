@@ -8,6 +8,8 @@
 - Transcribe audio to text using OpenAI Whisper API in realtime.
   - enable to select language
   - fetch API key from environment variable.
+- Make it able to set environment variable in `.env` file.
+  - Make sure this is ignored by git.
 - Show the transcribed text in a text area.
 - Allow user to edit the transcribed text.
   - Make the input by user green.
@@ -24,9 +26,11 @@
 - Show a wide and long text area for in the middle.
 - Show buttons for recording, saving, and loading at the right side.
 - Show input for the title at the top.
+- Make the UI simple and aesthetic.
 
 ## Tech Stack
 
 - Use React for the frontend.
 - Use TypeScript for type safety.
 - Use pnpm as the package manager.
+  - You can add other packages as needed.
