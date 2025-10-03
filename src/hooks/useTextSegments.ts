@@ -3,7 +3,7 @@ import type { TextSegment } from "../types";
 
 export interface UseTextSegmentsReturn {
 	segments: TextSegment[];
-	addWhisperText: (text: string) => void;
+	addTranscribedText: (text: string) => void;
 	addRealtimeText: (text: string, isFinal: boolean) => void;
 	updateSegment: (id: string, newText: string, isUserInput: boolean) => void;
 	clearSegments: () => void;
@@ -14,9 +14,9 @@ export const useTextSegments = (): UseTextSegmentsReturn => {
 	const [segments, setSegments] = useState<TextSegment[]>([]);
 	const [currentRealtimeId, setCurrentRealtimeId] = useState<string | null>(null);
 
-	const addWhisperText = useCallback((text: string) => {
+	const addTranscribedText = useCallback((text: string) => {
 		const newSegment: TextSegment = {
-			id: `whisper_${Date.now()}_${Math.random()}`,
+			id: `azure_speech_${Date.now()}_${Math.random()}`,
 			text: text.trim(),
 			isUserInput: false,
 			timestamp: Date.now(),
@@ -94,7 +94,7 @@ export const useTextSegments = (): UseTextSegmentsReturn => {
 
 	return {
 		segments,
-		addWhisperText,
+		addTranscribedText,
 		addRealtimeText,
 		updateSegment,
 		clearSegments,

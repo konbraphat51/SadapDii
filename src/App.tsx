@@ -18,18 +18,16 @@ function App() {
 	const [selectedDeviceId, setSelectedDeviceId] = useState("");
 	const [realtimeEnabled, setRealtimeEnabled] = useState(false);
 
-	const { segments, addWhisperText, updateSegment, clearSegments } =
+	const { segments, addTranscribedText, updateSegment, clearSegments } =
 		useTextSegments();
 
 	// Real-time transcription
 	const {
-		isConnected: isRealtimeConnected,
 		connectionStatus: realtimeStatus,
 		startRealtimeTranscription,
 		stopRealtimeTranscription,
-		error: realtimeError,
-	} = useRealtimeTranscription((text: string, isFinal: boolean) => {
-		addWhisperText(text);
+	} = useRealtimeTranscription((text: string) => {
+		addTranscribedText(text);
 	});
 
 	const {
@@ -41,7 +39,7 @@ function App() {
 		currentBlob,
 		audioMagnitude,
 	} = useAudioRecording({
-		onTranscription: addWhisperText,
+		onTranscription: addTranscribedText,
 		selectedLanguage,
 		audioSource,
 		audioFormat,
@@ -71,7 +69,7 @@ function App() {
 			// Add loaded segments one by one
 			loadedSegments.forEach((segment, index) => {
 				setTimeout(() => {
-					addWhisperText(segment.text);
+					addTranscribedText(segment.text);
 					if (segment.isUserInput) {
 						updateSegment(segment.id, segment.text, true);
 					}

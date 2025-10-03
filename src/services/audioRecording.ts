@@ -22,8 +22,6 @@ export class AudioRecordingService {
 	private dataArray: Uint8Array | null = null;
 	private animationFrame: number | null = null;
 	private onMagnitudeUpdate?: (magnitude: number) => void;
-	private onRealtimeTranscription?: (text: string) => void;
-	private isRealtimeEnabled = false;
 
 	async getAudioDevices(): Promise<AudioDevice[]> {
 		try {
@@ -154,21 +152,6 @@ export class AudioRecordingService {
 	// Set up callback for magnitude updates
 	setMagnitudeUpdateCallback(callback: (magnitude: number) => void): void {
 		this.onMagnitudeUpdate = callback;
-	}
-
-	// Set up callback for real-time transcription
-	setRealtimeTranscriptionCallback(callback: (text: string) => void): void {
-		this.onRealtimeTranscription = callback;
-	}
-
-	// Enable real-time transcription
-	enableRealtimeTranscription(): void {
-		this.isRealtimeEnabled = true;
-	}
-
-	// Disable real-time transcription
-	disableRealtimeTranscription(): void {
-		this.isRealtimeEnabled = false;
 	}
 
 	// Set up audio analysis for real-time magnitude detection

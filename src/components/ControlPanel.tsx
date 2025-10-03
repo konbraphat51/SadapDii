@@ -3,7 +3,7 @@ import {
 	audioRecordingService,
 	type AudioDevice,
 } from "../services/audioRecording";
-import { SUPPORTED_LANGUAGES } from "../services/whisperTranscription";
+import { SUPPORTED_LANGUAGES } from "../services/azureSpeechTranscription";
 import { AudioMagnitudeVisualizer } from "./AudioMagnitudeVisualizer";
 
 interface ControlPanelProps {

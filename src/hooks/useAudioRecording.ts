@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { audioRecordingService } from "../services/audioRecording";
-import { whisperService } from "../services/whisperTranscription";
+import { azureSpeechService } from "../services/azureSpeechTranscription";
 
 export interface UseAudioRecordingReturn {
 	isRecording: boolean;
@@ -126,8 +126,8 @@ export const useAudioRecording = (
 
 			// Only do batch transcription if real-time is not enabled
 			if (!realtimeEnabled) {
-				// Transcribe the audio
-				const result = await whisperService.transcribeAudio(audioBlob, {
+				// Transcribe the audio using Azure Speech
+				const result = await azureSpeechService.transcribeAudio(audioBlob, {
 					language: selectedLanguage === "auto" ? undefined : selectedLanguage,
 				});
 				onTranscription(result.text);

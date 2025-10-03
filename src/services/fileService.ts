@@ -34,7 +34,7 @@ export class FileService {
         .user-input {
             color: #22c55e;
         }
-        .whisper-input {
+        .transcription-input {
             color: #000000;
         }
         .metadata {

@@ -12,6 +12,7 @@
   "dependencies": {
     "file-saver": "^2.0.5",
     "lamejs": "^1.2.1",
+    "microsoft-cognitiveservices-speech-sdk": "^1.46.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-media-recorder": "^1.7.2"

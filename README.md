@@ -1,6 +1,6 @@
 # SadapDii - Audio Transcription App
 
-A React-based application for real-time audio recording and transcription using OpenAI's Whisper API.
+A React-based application for real-time audio recording and transcription using Azure Speech Recognition API.
 
 สดับ (sadap) = listen
 
@@ -9,8 +9,8 @@ A React-based application for real-time audio recording and transcription using 
 - 🎤 **Audio Recording**: Record from microphone or system audio output
 - 🎵 **Multiple Formats**: Save recordings as WebM or MP3 files
 - 💻 **System Audio Capture**: Record computer's audio output (system sounds, music, etc.)
-- 🔤 **Real-time Transcription**: Transcribe audio using OpenAI Whisper API
-- 🌍 **Multi-language Support**: Choose from 15+ supported languages or auto-detect
+- 🔤 **Real-time Transcription**: Transcribe audio using Azure Speech Recognition API
+- 🌍 **Multi-language Support**: Choose from 20+ supported languages or auto-detect
 - ✏️ **Text Editing**: Edit transcribed text with visual distinction between AI and user input
 - 💾 **File Operations**: Save as HTML files and load existing transcriptions
 - 🎨 **Modern UI**: Clean, responsive interface with aesthetic design
@@ -23,15 +23,16 @@ A React-based application for real-time audio recording and transcription using 
 pnpm install
 ```
 
-### 2. Configure OpenAI API Key
+### 2. Configure Azure Speech Service
 
-Create a `.env` file in the project root and add your OpenAI API key:
+Create a `.env` file in the project root and add your Azure Speech Service credentials:
 
 ```env
-VITE_OPENAI_API_KEY=your_openai_api_key_here
+VITE_AZURE_SPEECH_KEY=your_azure_speech_key_here
+VITE_AZURE_SPEECH_REGION=your_azure_region_here
 ```
 
-**Important**: Get your API key from [OpenAI's platform](https://platform.openai.com/api-keys)
+**Important**: Get your credentials from [Azure Cognitive Services](https://portal.azure.com/) by creating a Speech service resource.
 
 ### 3. Run the Application
 
@@ -78,14 +79,16 @@ The application will be available at `http://localhost:5173/`
 
 - **Frontend**: React + TypeScript + Vite
 - **Audio Recording**: Web Audio API with MediaRecorder
-- **Transcription**: OpenAI Whisper API
+- **Transcription**: Azure Speech Recognition API
+- **Real-time Processing**: Azure Speech SDK for continuous recognition
 - **Styling**: Custom CSS with modern design principles
 - **File Handling**: HTML export/import with colored text segments
 
 ### Key Components
 
 - `AudioRecordingService`: Handles microphone access and audio capture
-- `WhisperTranscriptionService`: Manages OpenAI API integration
+- `AzureSpeechTranscriptionService`: Manages Azure Speech API integration
+- `RealtimeTranscriptionService`: Handles continuous speech recognition
 - `FileService`: Handles HTML export/import functionality
 - `TextEditor`: Rich text editing with color-coded segments
 - `ControlPanel`: Audio settings and file operations
@@ -93,9 +96,10 @@ The application will be available at `http://localhost:5173/`
 ### Supported Languages
 
 - Auto-detect
-- English, Spanish, French, German, Italian
-- Portuguese, Russian, Japanese, Korean
-- Chinese, Arabic, Hindi, Dutch, Polish
+- English (US & UK), Spanish (Spain & Mexico), French, German, Italian
+- Portuguese (Brazil & Portugal), Russian, Japanese, Korean
+- Chinese (Simplified & Traditional), Arabic, Hindi, Dutch, Polish
+- Swedish, Danish, Norwegian, Finnish
 
 ## Browser Requirements
 
